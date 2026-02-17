@@ -1,0 +1,38 @@
+{
+  "short_name": "Product Catalogue",
+  "name": "Product Catalogue - MERN E-commerce with Stripe",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "logo192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "logo512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    },
+    {
+      "src": "maskable_icon.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "maskable"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#667eea",
+  "background_color": "#ffffff",
+  "orientation": "portrait-primary",
+  "categories": ["shopping", "ecommerce", "productivity"],
+  "description": "Complete full-stack e-commerce solution with MongoDB, Express.js, React, Node.js and Stripe payments",
+  "lang": "en-US",
+  "dir": "ltr",
+  "scope": "/",
+  "prefer_related_applications": false
+}

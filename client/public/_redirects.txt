@@ -1,0 +1,5 @@
+# Netlify redirects
+/*    /index.html    200
+
+# API proxy (if needed)
+/api/*  http://localhost:5000/api/:splat  200
