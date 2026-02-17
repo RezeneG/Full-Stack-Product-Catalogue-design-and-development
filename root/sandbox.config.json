@@ -1,0 +1,16 @@
+﻿{
+  "infiniteLoopProtection": true,
+  "hardReloadOnChange": false,
+  "view": "browser",
+  "container": {
+    "node": "18",
+    "port": 3000
+  },
+  "template": "node",
+  "setupScript": "cd server && npm install && cd ../client && npm install",
+  "startScript": "cd server && npm run dev & cd ../client && npm start",
+  "silent": true,
+  "isConsole": false,
+  "isServer": true,
+  "isStatic": false
+}
