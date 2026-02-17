@@ -1,0 +1,134 @@
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css'; // Global styles
+import App from './App';
+
+// Error Boundary Component
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null, errorInfo: null };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error('Error caught by boundary:', error, errorInfo);
+    this.setState({
+      error: error,
+      errorInfo: errorInfo
+    });
+    
+    // You can also log the error to an error reporting service
+    // logErrorToService(error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="error-boundary">
+          <h1>🎯 Oops! Something went wrong</h1>
+          <p>We're sorry, but something unexpected happened.</p>
+          {process.env.NODE_ENV === 'development' && this.state.error && (
+            <details style={{ whiteSpace: 'pre-wrap', marginTop: '1rem' }}>
+              <summary>Error Details</summary>
+              <p style={{ color: '#e74c3c' }}>{this.state.error.toString()}</p>
+              <p>{this.state.errorInfo?.componentStack}</p>
+            </details>
+          )}
+          <button 
+            onClick={() => window.location.reload()}
+            style={{
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              color: 'white',
+              border: 'none',
+              padding: '0.8rem 2rem',
+              borderRadius: '8px',
+              fontSize: '1rem',
+              fontWeight: '600',
+              cursor: 'pointer',
+              marginTop: '1.5rem',
+              transition: 'transform 0.3s'
+            }}
+            onMouseEnter={(e) => e.target.style.transform = 'translateY(-2px)'}
+            onMouseLeave={(e) => e.target.style.transform = 'translateY(0)'}
+          >
+            🔄 Refresh Page
+          </button>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
+
+// Performance Monitoring
+const reportWebVitals = (metric) => {
+  if (process.env.NODE_ENV === 'development') {
+    console.log('Web Vital:', metric);
+  }
+  // You can send to analytics service
+  // sendToAnalytics(metric);
+};
+
+// Create root and render app
+const root = ReactDOM.createRoot(document.getElementById('root'));
+
+root.render(
+  <React.StrictMode>
+    <ErrorBoundary>
+      <App />
+    </ErrorBoundary>
+  </React.StrictMode>
+);
+
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals(console.log);
+
+// Enable Hot Module Replacement (HMR) for development
+if (process.env.NODE_ENV === 'development' && module.hot) {
+  module.hot.accept('./App', () => {
+    const NextApp = require('./App').default;
+    root.render(
+      <React.StrictMode>
+        <ErrorBoundary>
+          <NextApp />
+        </ErrorBoundary>
+      </React.StrictMode>
+    );
+  });
+}
+
+// Register Service Worker for PWA (optional)
+if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/service-worker.js').then(
+      (registration) => {
+        console.log('ServiceWorker registered: ', registration);
+      },
+      (err) => {
+        console.log('ServiceWorker registration failed: ', err);
+      }
+    );
+  });
+}
+
+// Handle unhandled promise rejections
+window.addEventListener('unhandledrejection', (event) => {
+  console.error('Unhandled Promise Rejection:', event.reason);
+  // Prevent default browser warning
+  event.preventDefault();
+});
+
+// Handle client-side routing errors
+window.addEventListener('error', (event) => {
+  if (event.message?.includes('Failed to fetch dynamically imported module')) {
+    console.log('Chunk loading failed - refreshing page');
+    window.location.reload();
+  }
+});
